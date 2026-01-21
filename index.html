@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarnMax Admin - Control Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; background: #f8fafc; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .sidebar-btn.active { background: #2563eb; color: white; border-radius: 15px; }
+        .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- ================= ADMIN LOGIN GATEWAY ================= -->
+    <div id="admin-login-box" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white p-8 rounded-[40px] shadow-2xl text-center">
+            <div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-lock text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2 italic">অ্যাডমিন লগইন</h2>
+            <input type="password" id="adminPassInput" placeholder="পাসওয়ার্ড দিন" 
+                class="w-full bg-slate-100 border-2 border-transparent focus:border-blue-500 p-4 rounded-2xl outline-none font-bold text-center mb-4 transition">
+            <button onclick="validateAdmin()" class="w-full bg-blue-600 text-white font-black py-4 rounded-2xl shadow-lg active:scale-95 uppercase italic">লগইন</button>
+            <p id="error-msg" class="text-red-500 text-xs mt-4 font-bold hidden italic">ভুল পাসওয়ার্ড!</p>
+        </div>
+    </div>
+
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div id="admin-main-content" class="hidden">
+        <div class="flex flex-col md:flex-row min-h-screen">
+            
+            <!-- Sidebar -->
+            <aside class="w-full md:w-64 bg-white border-r p-6 space-y-8">
+                <div class="text-2xl font-black text-blue-600 italic">EARN<span class="text-orange-500">MAX</span></div>
+                <nav class="space-y-2">
+                    <button onclick="showTab('dashboard', this)" class="sidebar-btn active w-full flex items-center gap-3 p-4 text-gray-600 font-bold italic">
+                        <i class="fas fa-chart-line w-5"></i> ড্যাশবোর্ড
+                    </button>
+                    <button onclick="showTab('activation', this)" class="sidebar-btn w-full flex items-center gap-3 p-4 text-gray-600 font-bold italic">
+                        <i class="fas fa-user-check w-5"></i> এক্টিভেশন <span id="act-count" class="bg-blue-100 text-blue-600 px-2 py-0.5 rounded text-[10px] ml-auto">0</span>
+                    </button>
+                    <button onclick="showTab('withdrawals-tab', this)" class="sidebar-btn w-full flex items-center gap-3 p-4 text-gray-600 font-bold italic">
+                        <i class="fas fa-money-bill-wave w-5"></i> উইথড্র রিকোয়েস্ট <span id="wd-count" class="bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded text-[10px] ml-auto">0</span>
+                    </button>
+                    <button onclick="adminLogout()" class="w-full flex items-center gap-3 p-4 text-red-500 font-bold hover:bg-red-50 rounded-2xl transition italic">
+                        <i class="fas fa-sign-out-alt w-5"></i> লগ আউট
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="flex-1 p-4 md:p-10">
+                
+                <!-- Dashboard Tab -->
+                <div id="dashboard" class="tab-content active space-y-6">
+                    <h2 class="text-2xl font-black text-slate-800 italic">ওভারভিউ</h2>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border">
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">মোট ইউজার</p>
+                            <h3 id="total-users" class="text-3xl font-black text-slate-800 mt-1">০</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border">
+                            <p class="text-xs font-bold text-orange-400 uppercase tracking-widest leading-none">পেন্ডিং একটিভ</p>
+                            <h3 id="dash-act-count" class="text-3xl font-black text-orange-500 mt-1">০</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded
